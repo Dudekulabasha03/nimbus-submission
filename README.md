@@ -1,5 +1,8 @@
 # Nimbus Retail — Automated Support Ticket Processor
 
+![Dashboard Preview](assets/dashboard.png)
+![History Preview](assets/history.png)
+
 This repository contains two solutions for automating the classification of Nimbus Retail support tickets using Large Language Models (LLMs):
 
 1. **Nimbus Ticket Processor (CLI)**: A command-line script for local, automated processing.
