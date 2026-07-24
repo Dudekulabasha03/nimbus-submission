@@ -1,0 +1,456 @@
+{
+  "1": {
+    "hash": "17d394b23604e215aa6550904a377004",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "2": {
+    "hash": "964a2b3b5b0c0fa6bff4ec09674deea3",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "4": {
+    "hash": "1275a5ab9c1777ff38d88ae8e318dca4",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "5": {
+    "hash": "693d17c05b9354b582764f427d37d320",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "6": {
+    "hash": "aab04f1d0208c78695882c5eb766cd2c",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "7": {
+    "hash": "d72d2ea33ce928d4b12546f547fe50d1",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "8": {
+    "hash": "5696d0735249d8e256d1224ab21052b6",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "9": {
+    "hash": "3146384ae4e8a2db05593754cab46396",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "10": {
+    "hash": "ea4b3c863b6a0046a527da38a4c8d2e4",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Spam",
+      "urgency": "Low",
+      "summary": "Obvious spam message based on pre-filter.",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "11": {
+    "hash": "34db9748d7babc67bfff2185aa7e5421",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "12": {
+    "hash": "2346a865b0b1f1a024b1a405aca7888c",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "13": {
+    "hash": "c3f9a34e8ca54b74475a29d9534cb836",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "15": {
+    "hash": "004d95d346cdd74a5449805563a1c5f3",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "16": {
+    "hash": "cf6a403bcefda61ef9475d81dd3ef9af",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "17": {
+    "hash": "4cf7fb3a8154d2f4af8772b606fd27d7",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "18": {
+    "hash": "33801f7c7b85a15f83d81d6e8086e13c",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "19": {
+    "hash": "d6eb50dde2cb6cfc1abcba097f63de8d",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "20": {
+    "hash": "c6c9747c3cce7ec01e18b82ae719b0fd",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "21": {
+    "hash": "0193689e297042facb636b12582ca064",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "22": {
+    "hash": "78a8245aa19a2f10c9cf07fdcc8b2cbb",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "23": {
+    "hash": "dedb82ee2629ba51cff771476b268925",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "24": {
+    "hash": "f67c96a578f9ca5fbbcb766f5171a546",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "25": {
+    "hash": "f9f11cfe7b981aaba24adb7e14f44b5a",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "26": {
+    "hash": "3423580ecf06155288f6f6a750c1bdce",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "27": {
+    "hash": "a09d176812b1d7b7a91c2aac2799dcf1",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "28": {
+    "hash": "e782655c0b9a7e65841843c9d42f35da",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "29": {
+    "hash": "ee6420c64111d46edda571a764ecb704",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Spam",
+      "urgency": "Low",
+      "summary": "Obvious spam message based on pre-filter.",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "30": {
+    "hash": "7fa1db27c4729d6d03db97c55e8aa7b0",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "31": {
+    "hash": "aab5437744d83b19d5eec0a6fccf735c",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "32": {
+    "hash": "81862c3a0d0c7652ce636fd896d2cc69",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "33": {
+    "hash": "352c6e9d4df8347d891ba2fb9a9b1ac7",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "34": {
+    "hash": "ba164044ac5056bdc168d2c992991a87",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "35": {
+    "hash": "c6d3b40a77c2cbcac9e5b78d06ea6622",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "36": {
+    "hash": "e33f00724be41eada80d5bac8f652eba",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "37": {
+    "hash": "00aee6c460b34e474bab12d4cfb6807f",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "38": {
+    "hash": "696136d5ef2a057fb220ada3aebb41ea",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "39": {
+    "hash": "947d1491b4ac4c8daf276a3a5ea7886a",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "40": {
+    "hash": "ddddcec6e94e2d45818eea5101f60d85",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "41": {
+    "hash": "f3290fa03cd731735dffa1a5a0bc95d8",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "42": {
+    "hash": "e77593d0fc9f22d92f37450b1a475322",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "43": {
+    "hash": "fccde48d7358a089f70ec71dbe5b89b9",
+    "timestamp": 1784890626.19925,
+    "classification": {
+      "category": "Other",
+      "urgency": "Medium",
+      "summary": "Dry run summary",
+      "escalate": false,
+      "escalation_reason": ""
+    }
+  },
+  "_processed_files": [
+    "17678b6267ed5b82dd86104016be21c2"
+  ]
+}

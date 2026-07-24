@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nimbus Insight — Support Intelligence Platform</title>
+  <meta name="description" content="Nimbus Insight: AI-powered customer support ticket analytics and real-time KPI dashboard for Nimbus Retail." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-base:     #0a0a0f;
+      --bg-layer:    #0f0f1a;
+      --bg-card:     rgba(255,255,255,0.04);
+      --border:      rgba(255,255,255,0.08);
+      --cyan:        #00f0ff;
+      --cyan-dim:    rgba(0,240,255,0.15);
+      --purple:      #b026ff;
+      --purple-dim:  rgba(176,38,255,0.15);
+      --green:       #00ff88;
+      --red:         #ff4466;
+      --amber:       #ffb520;
+      --text-1:      #f0f0ff;
+      --text-2:      rgba(240,240,255,0.6);
+      --text-3:      rgba(240,240,255,0.35);
+      --blur:        blur(14px);
+      --radius:      16px;
+      --radius-sm:   8px;
+      --transition:  0.25s cubic-bezier(.4,0,.2,1);
+    }
+
+    html, body { height: 100%; background: var(--bg-base); color: var(--text-1); font-family: 'Inter', sans-serif; }
+
+    /* ── Scrollbar ────────────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 9px; }
+
+    /* ── Background Grid ──────────────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Glow orbs */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 600px 400px at 10% 20%, rgba(0,240,255,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 400px at 90% 80%, rgba(176,38,255,0.07) 0%, transparent 70%);
+    }
+
+    /* ── Layout ───────────────────────────────────────────────────────── */
+    #app { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* ── Header ───────────────────────────────────────────────────────── */
+    header {
+      padding: 18px 32px;
+      display: flex; align-items: center; gap: 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,10,15,0.8);
+      backdrop-filter: var(--blur);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .logo-text { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.5px; }
+    .logo-text span { color: var(--cyan); }
+    header nav { margin-left: auto; display: flex; gap: 6px; }
+
+    .tab-btn {
+      padding: 8px 20px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-2);
+      border-radius: 9999px; cursor: pointer; font-size: .875rem; font-weight: 500;
+      transition: var(--transition); font-family: inherit;
+    }
+    .tab-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--cyan-dim), var(--purple-dim));
+      border-color: var(--cyan); color: var(--text-1);
+      box-shadow: 0 0 20px rgba(0,240,255,0.2);
+    }
+
+    /* ── Main Content ─────────────────────────────────────────────────── */
+    main { flex: 1; padding: 32px; max-width: 1400px; margin: 0 auto; width: 100%; }
+
+    .view { display: none; animation: fadeIn .35s ease; }
+    .view.active { display: block; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+    /* ── Glass Card ───────────────────────────────────────────────────── */
+    .glass {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      backdrop-filter: var(--blur);
+    }
+
+    /* ── KPI Cards Row ────────────────────────────────────────────────── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px; margin-bottom: 24px;
+    }
+    .kpi-card {
+      padding: 24px;
+      position: relative; overflow: hidden;
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+    }
+    .kpi-label { font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 10px; }
+    .kpi-value { font-size: 2.4rem; font-weight: 700; line-height: 1; color: var(--text-1); margin-bottom: 6px; }
+    .kpi-sub { font-size: .8rem; color: var(--text-3); }
+    .kpi-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 2.2rem; opacity: .12; }
+
+    /* ── Charts ───────────────────────────────────────────────────────── */
+    .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .chart-card { padding: 24px; }
+    .chart-title { font-size: .85rem; font-weight: 600; color: var(--text-2); margin-bottom: 16px; text-transform: uppercase; letter-spacing: .06em; }
+    .chart-wrap { position: relative; height: 220px; }
+
+    .trend-card { padding: 24px; }
+    .trend-wrap { position: relative; height: 220px; }
+
+    /* ── Upload Zone ──────────────────────────────────────────────────── */
+    .upload-card { padding: 32px; margin-bottom: 24px; }
+    #drop-zone {
+      border: 2px dashed var(--border); border-radius: var(--radius);
+      padding: 48px 32px; text-align: center; cursor: pointer;
+      transition: var(--transition); position: relative;
+    }
+    #drop-zone.dragover {
+      border-color: var(--cyan);
+      background: var(--cyan-dim);
+      box-shadow: 0 0 40px rgba(0,240,255,0.15), inset 0 0 40px rgba(0,240,255,0.05);
+    }
+    #drop-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .drop-icon { font-size: 2.8rem; margin-bottom: 12px; }
+    .drop-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 6px; }
+    .drop-sub { font-size: .85rem; color: var(--text-3); }
+    .upload-actions { margin-top: 20px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .file-name { font-size: .85rem; color: var(--cyan); font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Buttons ──────────────────────────────────────────────────────── */
+    .btn {
+      padding: 10px 24px; border-radius: 9999px;
+      font-family: inherit; font-size: .875rem; font-weight: 600;
+      cursor: pointer; border: none; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: #000;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,240,255,0.35); }
+    .btn-primary:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+    .btn-ghost {
+      background: var(--bg-card); border: 1px solid var(--border); color: var(--text-2);
+    }
+    .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    /* ── Status Pill ──────────────────────────────────────────────────── */
+    #status-msg {
+      padding: 10px 18px; border-radius: var(--radius-sm);
+      font-size: .85rem; font-family: 'JetBrains Mono', monospace;
+      display: none; margin-top: 16px;
+    }
+    #status-msg.pending   { background: rgba(255,181,32,.1); border: 1px solid var(--amber); color: var(--amber); display: block; }
+    #status-msg.processing{ background: rgba(0,240,255,.1);  border: 1px solid var(--cyan);  color: var(--cyan);  display: block; }
+    #status-msg.completed { background: rgba(0,255,136,.1);  border: 1px solid var(--green); color: var(--green); display: block; }
+    #status-msg.failed    { background: rgba(255,68,102,.1); border: 1px solid var(--red);   color: var(--red);   display: block; }
+
+    /* ── History Table ────────────────────────────────────────────────── */
+    .history-card { padding: 24px; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .section-title { font-size: .95rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text-2); }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; padding: 10px 14px; font-size: .75rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--text-3); border-bottom: 1px solid var(--border); }
+    td { padding: 12px 14px; font-size: .875rem; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(0,240,255,0.03); }
+
+    .badge {
+      padding: 3px 10px; border-radius: 9999px; font-size: .72rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    }
+    .badge-pending    { background: rgba(255,181,32,.12); color: var(--amber); border: 1px solid rgba(255,181,32,.3); }
+    .badge-processing { background: rgba(0,240,255,.12);  color: var(--cyan);  border: 1px solid rgba(0,240,255,.3); }
+    .badge-completed  { background: rgba(0,255,136,.12);  color: var(--green); border: 1px solid rgba(0,255,136,.3); }
+    .badge-failed     { background: rgba(255,68,102,.12); color: var(--red);   border: 1px solid rgba(255,68,102,.3); }
+
+    .empty-state { text-align: center; padding: 48px 24px; color: var(--text-3); }
+    .empty-icon { font-size: 2.5rem; margin-bottom: 12px; }
+
+    /* ── Modal ────────────────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,.7); backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center; padding: 24px;
+      opacity: 0; pointer-events: none; transition: var(--transition);
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      width: 100%; max-width: 800px; max-height: 85vh;
+      border: 1px solid var(--border);
+      background: #0f0f1a; border-radius: var(--radius);
+      display: flex; flex-direction: column;
+      transform: translateY(20px); transition: var(--transition);
+    }
+    .modal-overlay.open .modal { transform: none; }
+    .modal-header {
+      padding: 18px 24px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-title { font-size: .95rem; font-weight: 600; }
+    .modal-close {
+      background: none; border: none; color: var(--text-3); font-size: 1.4rem; cursor: pointer; line-height: 1; transition: var(--transition);
+    }
+    .modal-close:hover { color: var(--text-1); }
+    .modal-body { flex: 1; overflow-y: auto; padding: 24px; }
+    #modal-report {
+      font-family: 'JetBrains Mono', monospace; font-size: .8rem; line-height: 1.7;
+      color: var(--text-2); white-space: pre-wrap; word-break: break-word;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────────────── */
+    footer {
+      text-align: center; padding: 16px 32px; font-size: .75rem; color: var(--text-3);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Responsive ───────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      main { padding: 16px; }
+      .charts-row { grid-template-columns: 1fr; }
+      header { padding: 14px 16px; }
+    }
+
+    /* ── Pulse animation for processing badge ─────────────────────────── */
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+    .badge-processing { animation: pulse 1.5s ease-in-out infinite; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ── Header ─────────────────────────────────────────── -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">☁</div>
+      <div class="logo-text">Nimbus <span>Insight</span></div>
+    </div>
+    <div id="provider-badge" style="margin-left:16px;font-size:.75rem;padding:4px 12px;border-radius:9999px;border:1px solid var(--border);color:var(--text-3);">checking provider…</div>
+    <nav>
+      <button id="tab-dashboard" class="tab-btn active" onclick="switchTab('dashboard')">📊 KPI Dashboard</button>
+      <button id="tab-upload"    class="tab-btn"        onclick="switchTab('upload')">⬆ Upload & History</button>
+    </nav>
+  </header>
+
+  <!-- ── Warning Banner ────────────────────────────────────── -->
+  <div id="warn-banner" style="display:none;background:rgba(255,181,32,.12);border-bottom:1px solid rgba(255,181,32,.3);padding:10px 32px;font-size:.82rem;color:var(--amber);">
+    ⚠ <span id="warn-text"></span>
+  </div>
+
+  <!-- ── Main ───────────────────────────────────────────────── -->
+  <main>
+
+    <!-- ═══════════════ KPI DASHBOARD VIEW ════════════════════ -->
+    <div id="view-dashboard" class="view active">
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="glass kpi-card">
+          <div class="kpi-icon">🎫</div>
+          <div class="kpi-label">Total Tickets</div>
+          <div class="kpi-value" id="kpi-total">—</div>
+          <div class="kpi-sub">across all runs</div>
+        </div>
+        <div class="glass kpi-card">
+          <div class="kpi-icon">📅</div>
+          <div class="kpi-label">Avg. Daily Volume</div>
+          <div class="kpi-value" id="kpi-avg">—</div>
+          <div class="kpi-sub">tickets per day</div>
+        </div>
+        <div class="glass kpi-card">
+          <div class="kpi-icon">🚨</div>
+          <div class="kpi-label">Total Escalations</div>
+          <div class="kpi-value" id="kpi-esc">—</div>
+          <div class="kpi-sub">human review required</div>
+        </div>
+        <div class="glass kpi-card">
+          <div class="kpi-icon">🔴</div>
+          <div class="kpi-label">High Urgency %</div>
+          <div class="kpi-value" id="kpi-high">—</div>
+          <div class="kpi-sub">of all classified</div>
+        </div>
+      </div>
+
+      <!-- Doughnut + Pie -->
+      <div class="charts-row">
+        <div class="glass chart-card">
+          <div class="chart-title">Urgency Distribution</div>
+          <div class="chart-wrap">
+            <canvas id="chart-urgency"></canvas>
+          </div>
+        </div>
+        <div class="glass chart-card">
+          <div class="chart-title">Category Breakdown</div>
+          <div class="chart-wrap">
+            <canvas id="chart-category"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trend Line Chart -->
+      <div class="glass trend-card">
+        <div class="chart-title">Daily Ticket Volume &amp; Escalations</div>
+        <div class="trend-wrap">
+          <canvas id="chart-trend"></canvas>
+        </div>
+      </div>
+
+    </div><!-- /view-dashboard -->
+
+
+    <!-- ═══════════════ UPLOAD & HISTORY VIEW ═════════════════ -->
+    <div id="view-upload" class="view">
+
+      <!-- Upload Card -->
+      <div class="glass upload-card">
+        <div class="section-title" style="margin-bottom:20px;">Upload CSV for Processing</div>
+        <div id="drop-zone">
+          <input type="file" id="file-input" accept=".csv" />
+          <div class="drop-icon">📂</div>
+          <div class="drop-title">Drag & drop your CSV here</div>
+          <div class="drop-sub">or click to browse — requires ticket_id &amp; message columns</div>
+        </div>
+        <div class="upload-actions">
+          <button class="btn btn-primary" id="btn-process" disabled onclick="processFile()">
+            ⚡ Process Now
+          </button>
+          <span class="file-name" id="file-label">No file selected</span>
+        </div>
+        <div id="status-msg"></div>
+      </div>
+
+      <!-- History Table -->
+      <div class="glass history-card">
+        <div class="section-header">
+          <div class="section-title">Processing History</div>
+          <button class="btn btn-ghost" onclick="loadHistory()">↺ Refresh</button>
+        </div>
+        <div id="history-body">
+          <div class="empty-state">
+            <div class="empty-icon">🗂</div>
+            <div>Loading history…</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /view-upload -->
+
+  </main>
+
+  <footer>Nimbus Insight — AI-powered support intelligence · Built with FastAPI &amp; Chart.js</footer>
+</div><!-- /app -->
+
+<!-- ── Report Modal ─────────────────────────────────────────── -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal glass">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">Report Viewer</span>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body">
+      <pre id="modal-report">Loading…</pre>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ── State ─────────────────────────────────────────────────────────────────────
+let selectedFile = null;
+let activeJobId  = null;
+let pollInterval = null;
+
+let urgencyChart  = null;
+let categoryChart = null;
+let trendChart    = null;
+
+const NEON = {
+  cyan:   '#00f0ff',
+  purple: '#b026ff',
+  green:  '#00ff88',
+  amber:  '#ffb520',
+  red:    '#ff4466',
+  blue:   '#4488ff',
+  pink:   '#ff44cc',
+};
+
+Chart.defaults.color       = 'rgba(240,240,255,0.55)';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.07)';
+Chart.defaults.font.family = 'Inter, sans-serif';
+
+// ── Tab Switching ─────────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`view-${name}`).classList.add('active');
+  document.getElementById(`tab-${name}`).classList.add('active');
+  if (name === 'dashboard') loadKPI();
+  if (name === 'upload')    loadHistory();
+}
+
+// ── File Drag & Drop ──────────────────────────────────────────────────────────
+const dropZone = document.getElementById('drop-zone');
+const fileInput = document.getElementById('file-input');
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  if (e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', () => { if (fileInput.files[0]) setFile(fileInput.files[0]); });
+
+function setFile(f) {
+  selectedFile = f;
+  document.getElementById('file-label').textContent = f.name;
+  document.getElementById('btn-process').disabled = false;
+  setStatus('', '');
+}
+
+// ── Upload & Process ──────────────────────────────────────────────────────────
+async function processFile() {
+  if (!selectedFile) return;
+  const btn = document.getElementById('btn-process');
+  btn.disabled = true;
+
+  const fd = new FormData();
+  fd.append('file', selectedFile);
+
+  setStatus('pending', '⏳ Uploading…');
+
+  try {
+    const res  = await fetch('/upload', { method: 'POST', body: fd });
+    const data = await res.json();
+
+    if (!res.ok) {
+      setStatus('failed', `✗ ${data.detail || 'Upload failed.'}`);
+      btn.disabled = false;
+      return;
+    }
+
+    // ── Duplicate file detected ──────────────────────────────────────────
+    if (data.already_processed) {
+      setStatus('completed',
+        `ℹ️ ${data.message} &nbsp;— &nbsp;` +
+        `<a href="#" onclick="viewReport('${data.job_id}','${escHtml(data.filename)}');return false;" ` +
+        `style="color:var(--cyan);text-decoration:underline;">View existing report</a>`
+      );
+      btn.disabled = false;
+      loadHistory();
+      return;
+    }
+
+    // ── New job — start polling ───────────────────────────────────────────
+    activeJobId = data.job_id;
+    setStatus('processing', `⚙ Processing job ${activeJobId.slice(0,8)}… polling every 2s`);
+    startPolling(activeJobId);
+
+  } catch(err) {
+    setStatus('failed', `✗ Network error: ${err.message}`);
+    btn.disabled = false;
+  }
+}
+
+function startPolling(jobId) {
+  clearInterval(pollInterval);
+  pollInterval = setInterval(async () => {
+    try {
+      const res  = await fetch(`/status/${jobId}`);
+      const data = await res.json();
+
+      if (data.status === 'COMPLETED') {
+        clearInterval(pollInterval);
+        setStatus('completed', `✓ Done! ${data.ticket_count} tickets classified. ${data.escalated_count} escalations.`);
+        document.getElementById('btn-process').disabled = false;
+        loadHistory();
+        loadKPI();
+      } else if (data.status === 'FAILED') {
+        clearInterval(pollInterval);
+        setStatus('failed', `✗ Failed: ${data.error_log || 'Unknown error'}`);
+        document.getElementById('btn-process').disabled = false;
+        loadHistory();
+      }
+    } catch(_) {}
+  }, 2000);
+}
+
+function setStatus(cls, msg) {
+  const el = document.getElementById('status-msg');
+  el.className = cls;
+  el.innerHTML = msg;  // supports HTML links for duplicate notice
+  if (!cls) el.style.display = 'none';
+}
+
+// ── History Table ─────────────────────────────────────────────────────────────
+async function loadHistory() {
+  const body = document.getElementById('history-body');
+  try {
+    const res  = await fetch('/reports');
+    const jobs = await res.json();
+
+    if (!jobs.length) {
+      body.innerHTML = `<div class="empty-state"><div class="empty-icon">🗂</div><div>No processing jobs yet — upload a CSV to get started.</div></div>`;
+      return;
+    }
+
+    const rows = jobs.map(j => `
+      <tr>
+        <td style="color:var(--text-3);font-family:'JetBrains Mono',monospace;font-size:.75rem;">${fmtDate(j.uploaded_at)}</td>
+        <td style="font-weight:500;">${escHtml(j.filename)}</td>
+        <td style="text-align:right;">${j.ticket_count ?? '—'}</td>
+        <td style="text-align:right;">${j.escalated_count ?? '—'}</td>
+        <td>${statusBadge(j.status)}</td>
+        <td>
+          ${j.status === 'COMPLETED' ? `
+            <button class="btn btn-ghost" style="padding:5px 12px;font-size:.75rem;" onclick="viewReport('${j.id}','${escHtml(j.filename)}')">View</button>
+            <a href="/download/${j.id}" class="btn btn-ghost" style="padding:5px 12px;font-size:.75rem;text-decoration:none;">↓</a>
+          ` : '—'}
+        </td>
+      </tr>`).join('');
+
+    body.innerHTML = `
+      <table>
+        <thead><tr>
+          <th>Date / Time</th><th>Filename</th>
+          <th style="text-align:right">Tickets</th>
+          <th style="text-align:right">Escalations</th>
+          <th>Status</th><th>Actions</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+  } catch(e) {
+    body.innerHTML = `<div class="empty-state" style="color:var(--red);">Failed to load history.</div>`;
+  }
+}
+
+function statusBadge(s) {
+  const map = { PENDING:'pending', PROCESSING:'processing', COMPLETED:'completed', FAILED:'failed' };
+  const cls = map[s] || 'pending';
+  return `<span class="badge badge-${cls}">${s}</span>`;
+}
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) + ' ' +
+         d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+}
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+async function viewReport(jobId, filename) {
+  document.getElementById('modal-title').textContent = filename;
+  document.getElementById('modal-report').textContent = 'Loading…';
+  document.getElementById('modal-overlay').classList.add('open');
+
+  try {
+    const res  = await fetch(`/status/${jobId}`);
+    const data = await res.json();
+    let content = data.report_text || 'No report available.';
+    if (data.error_log) {
+      content += `\n\n─── ERROR / WARNING LOG ───\n${data.error_log}`;
+    }
+    document.getElementById('modal-report').textContent = content;
+  } catch(e) {
+    document.getElementById('modal-report').textContent = 'Failed to load report.';
+  }
+}
+function closeModal(e) { if (e.target === document.getElementById('modal-overlay')) closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modal-overlay').classList.remove('open'); }
+
+// ── KPI Dashboard ─────────────────────────────────────────────────────────────
+async function loadKPI() {
+  try {
+    const res  = await fetch('/api/kpi');
+    const data = await res.json();
+    renderKPI(data);
+  } catch(e) { console.error('KPI load failed', e); }
+}
+
+function renderKPI(d) {
+  document.getElementById('kpi-total').textContent = d.total_tickets.toLocaleString();
+  document.getElementById('kpi-avg').textContent   = d.avg_per_day.toLocaleString();
+  document.getElementById('kpi-esc').textContent   = d.total_escalations.toLocaleString();
+  document.getElementById('kpi-high').textContent  = d.high_urgency_pct + '%';
+
+  // ── Urgency Doughnut ──────────────────────────────────────────
+  const urgD = d.urgency_distribution;
+  const urgLabels = Object.keys(urgD).length ? Object.keys(urgD) : ['Low','Medium','High'];
+  const urgVals   = Object.values(urgD).length ? Object.values(urgD) : [0,0,0];
+  const urgColors = urgLabels.map(l => l==='High'?NEON.red : l==='Medium'?NEON.amber : NEON.cyan);
+
+  if (urgencyChart) urgencyChart.destroy();
+  urgencyChart = new Chart(document.getElementById('chart-urgency'), {
+    type: 'doughnut',
+    data: { labels: urgLabels, datasets:[{ data: urgVals, backgroundColor: urgColors, borderColor: '#0a0a0f', borderWidth: 3, hoverOffset: 8 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: '65%',
+      plugins: { legend: { position:'right', labels:{ boxWidth:12, padding:14, font:{size:12} } } },
+      animation: { animateScale: true }
+    }
+  });
+
+  // ── Category Pie ──────────────────────────────────────────────
+  const catD = d.category_distribution;
+  const catLabels = Object.keys(catD);
+  const catVals   = Object.values(catD);
+  const palette = [NEON.cyan, NEON.purple, NEON.green, NEON.amber, NEON.red, NEON.blue, NEON.pink];
+
+  if (categoryChart) categoryChart.destroy();
+  categoryChart = new Chart(document.getElementById('chart-category'), {
+    type: 'pie',
+    data: {
+      labels: catLabels.length ? catLabels : ['No data'],
+      datasets:[{ data: catVals.length ? catVals : [1], backgroundColor: catLabels.length ? catLabels.map((_,i)=>palette[i%palette.length]) : ['rgba(255,255,255,0.1)'], borderColor:'#0a0a0f', borderWidth:3, hoverOffset:8 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position:'right', labels:{ boxWidth:12, padding:14, font:{size:12} } } }
+    }
+  });
+
+  // ── Trend Line ────────────────────────────────────────────────
+  const trend = d.trend_data;
+  const labels  = trend.map(t => t.date);
+  const tVols   = trend.map(t => t.tickets);
+  const tEscs   = trend.map(t => t.escalations);
+
+  if (trendChart) trendChart.destroy();
+  trendChart = new Chart(document.getElementById('chart-trend'), {
+    type: 'line',
+    data: {
+      labels: labels.length ? labels : ['No data'],
+      datasets: [
+        {
+          label: 'Tickets',
+          data: tVols.length ? tVols : [0],
+          borderColor: NEON.cyan,
+          backgroundColor: 'rgba(0,240,255,0.08)',
+          borderWidth: 2, pointRadius: 5,
+          pointBackgroundColor: NEON.cyan,
+          fill: true, tension: 0.4
+        },
+        {
+          label: 'Escalations',
+          data: tEscs.length ? tEscs : [0],
+          borderColor: NEON.red,
+          backgroundColor: 'rgba(255,68,102,0.08)',
+          borderWidth: 2, pointRadius: 5,
+          pointBackgroundColor: NEON.red,
+          fill: true, tension: 0.4
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode:'index', intersect:false },
+      plugins: { legend:{ labels:{ boxWidth:12, padding:16, font:{size:12} } } },
+      scales: {
+        x: { grid:{ color:'rgba(255,255,255,0.05)' }, ticks:{ maxTicksLimit:8 } },
+        y: { grid:{ color:'rgba(255,255,255,0.05)' }, beginAtZero:true, ticks:{ stepSize:1 } }
+      }
+    }
+  });
+}
+
+// ── Health Check ─────────────────────────────────────────────────────────────
+async function checkHealth() {
+  try {
+    const res = await fetch('/health');
+    const data = await res.json();
+    const badge = document.getElementById('provider-badge');
+    if (data.primary_provider) {
+      badge.textContent = `⚡ ${data.primary_provider}`;
+      badge.style.color = 'var(--green)';
+      badge.style.borderColor = 'rgba(0,255,136,.3)';
+    } else {
+      badge.textContent = '⚠ No AI provider';
+      badge.style.color = 'var(--amber)';
+      badge.style.borderColor = 'rgba(255,181,32,.3)';
+    }
+    if (data.warning) {
+      document.getElementById('warn-text').textContent = data.warning + ' — Tickets will be classified as Other/Medium until fixed.';
+      document.getElementById('warn-banner').style.display = 'block';
+    }
+  } catch(e) {
+    console.warn('Health check failed', e);
+  }
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+checkHealth();
+loadKPI();
+</script>
+</body>
+</html>
