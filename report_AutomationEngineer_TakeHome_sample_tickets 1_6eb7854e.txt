@@ -1,0 +1,46 @@
+========================================
+ NIMBUS RETAIL DAILY SUPPORT REPORT
+ Generated: 2026-07-24 11:39 UTC
+========================================
+
+SUMMARY
+-------
+Processed 41 valid ticket(s). Top categories: Other and Delivery. 12 escalation(s). 8 high-urgency.
+
+CATEGORY COUNTS
+---------------
+  Other                 : 17
+  Delivery              : 8
+  Refund                : 7
+  Product Question      : 3
+  Spam                  : 2
+  Technical Issue       : 2
+  Account               : 2
+
+URGENCY COUNTS
+--------------
+  Low     : 5
+  Medium  : 28
+  High    : 8
+
+ESCALATION LIST (Needs Human Attention)
+---------------------------------------
+  Ticket #4     | Priya Nair               | Customer has contacted support repeatedly about this issue.
+  Ticket #6     | Sam Whitfield            | Potential legal or fraud concern detected.
+  Ticket #7     | Sam Whitfield            | Customer has contacted support repeatedly about this issue.
+  Ticket #8     | Sam Whitfield            | Customer has contacted support repeatedly about this issue.
+  Ticket #9     | Grace Kim                | Customer has contacted support repeatedly about this issue.
+  Ticket #11    | Helena Voss              | Potential legal or fraud concern detected.
+  Ticket #20    | Marcus Lee               | Customer has contacted support repeatedly about this issue.
+  Ticket #21    | Marcus Lee               | Customer has contacted support repeatedly about this issue.
+  Ticket #26    | Priya Nair               | Customer has contacted support repeatedly about this issue.
+  Ticket #32    | Emeka Obi                | Potential legal or fraud concern detected.
+  Ticket #37    | Grace Kim                | Customer has contacted support repeatedly about this issue.
+  Ticket #42    | Sam Whitfield            | Potential legal or fraud concern detected.
+
+SKIPPED ROWS
+------------
+  Row 4 (Ticket 3): message is empty or whitespace-only.
+  Row 15 (Ticket 14): message is empty or whitespace-only.
+
+========================================
